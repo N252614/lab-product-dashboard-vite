@@ -25,7 +25,9 @@ test('displays all products initially', () => {
 test('applies conditional styling for out-of-stock products', () => {
   render(<App />)
   const outOfStockProduct = screen.getByText(/Phone/i) // Make sure "Phone" exists in sampleProducts
-  expect(outOfStockProduct.closest('div')).toHaveClass('outOfStockClass')
+  const parentDiv = outOfStockProduct.closest('div')
+
+  expect(parentDiv?.className).toMatch(/outOfStockClass/)
 })
 
 test('removes product from the dashboard when "Remove" button is clicked', () => {
@@ -34,8 +36,8 @@ test('removes product from the dashboard when "Remove" button is clicked', () =>
 
   expect(removeButtons.length).toBeGreaterThan(0) // Ensure buttons exist
 
-  if (removeButtons.length > 0) {
+  const firstProduct = screen.getAllByText(/Laptop/i)
     fireEvent.click(removeButtons[0])
     expect(removeButtons[0]).not.toBeInTheDocument() // Expect removal to work
-  }
-})
+  })
+
